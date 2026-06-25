@@ -264,7 +264,21 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
         st.slideT = SLIDE_TIME;
       }
     };
-    ctrlRef.current = { move, jump, slide, start };
+    const resetWorld = () => {
+      for (const o of obstacles) scene.remove(o.mesh);
+      obstacles.length = 0;
+      for (const c of coinObjs) scene.remove(c.mesh);
+      coinObjs.length = 0;
+      player.position.set(0, 0, 4);
+      player.rotation.x = 0;
+      player.scale.y = 1;
+      // Re-seed obstacles ahead of the player
+      for (let z = 25; z < 120; z += 12) {
+        if (Math.random() < 0.7) spawnObstacle(z);
+        if (Math.random() < 0.5) spawnCoinRow(z + 4);
+      }
+    };
+    ctrlRef.current = { move, jump, slide, start, resetWorld };
 
     // Keyboard
     const onKey = (e: KeyboardEvent) => {
