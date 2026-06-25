@@ -192,6 +192,7 @@ export function RunnerGestureControl({ active, controls }: Props) {
       return;
     }
 
+    const lm = hands[0];
     const g = classify(lm);
     const color = g === "none" ? "#94a3b8" : "#22c55e";
     drawHand(ctx, lm, w, h, color);
