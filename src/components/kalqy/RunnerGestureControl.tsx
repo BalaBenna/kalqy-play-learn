@@ -237,7 +237,10 @@ export function RunnerGestureControl({ active, controls }: Props) {
       const video = videoRef.current;
       if (!video) return;
       video.srcObject = stream;
-      await video.play();
+      try { await video.play(); } catch (e: any) {
+        if (e?.name === "AbortError") return; // unmounted/remounted, ignore
+        throw e;
+      }
       await initLandmarker();
       setStatus("ready");
       loop();
