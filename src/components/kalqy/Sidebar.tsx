@@ -9,7 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export type View = "dashboard" | "game" | "finger-quiz";
+export type View = "dashboard" | "game" | "finger-quiz" | "endless-runner";
 
 interface SidebarProps {
   view: View;
@@ -25,6 +25,7 @@ const ageGroups: {
     games: [
       { name: "Animal Walk Adventure", active: true, view: "game" },
       { name: "Finger Gesture Quiz", active: true, view: "finger-quiz" },
+      { name: "Endless Runner", active: true, view: "endless-runner" },
       { name: "Colour Hunt", active: false },
       { name: "Shape Catcher", active: false },
       { name: "Sound Safari", active: false },
