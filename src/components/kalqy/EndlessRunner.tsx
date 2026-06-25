@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
 import { ArrowLeft, Play, RotateCw, Coins, Trophy, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { RunnerGestureControl } from "./RunnerGestureControl";
 
 interface EndlessRunnerProps {
   onBack: () => void;
@@ -483,6 +484,21 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
 
       {/* Canvas mount */}
       <div ref={mountRef} className="absolute inset-0" />
+
+      {/* AI gesture controls (camera) — active during gameplay */}
+      {phase === "playing" && (
+        <div className="absolute right-3 top-16 z-20 md:top-20">
+          <RunnerGestureControl
+            active={phase === "playing"}
+            controls={{
+              moveLeft: () => ctrlRef.current?.move(-1),
+              moveRight: () => ctrlRef.current?.move(1),
+              jump: () => ctrlRef.current?.jump(),
+              slide: () => ctrlRef.current?.slide(),
+            }}
+          />
+        </div>
+      )}
 
       {/* Mobile touch controls */}
       {phase === "playing" && (
