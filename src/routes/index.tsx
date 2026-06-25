@@ -4,6 +4,7 @@ import { Sidebar, type View } from "@/components/kalqy/Sidebar";
 import { Dashboard, type Stats } from "@/components/kalqy/Dashboard";
 import { GameScreen, type GameResult } from "@/components/kalqy/GameScreen";
 import { FingerGestureQuiz } from "@/components/kalqy/FingerGestureQuiz";
+import { EndlessRunner } from "@/components/kalqy/EndlessRunner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -76,6 +77,19 @@ function Index() {
             onBack={() => setView("dashboard")}
             onComplete={(s) =>
               setStats((p) => ({ ...p, gamesPlayed: p.gamesPlayed + 1, stars: p.stars + s }))
+            }
+          />
+        )}
+        {view === "endless-runner" && (
+          <EndlessRunner
+            onBack={() => setView("dashboard")}
+            onComplete={(_score, coins) =>
+              setStats((p) => ({
+                ...p,
+                gamesPlayed: p.gamesPlayed + 1,
+                stars: p.stars + Math.min(5, Math.floor(coins / 5)),
+                coordination: Math.min(100, p.coordination + 3),
+              }))
             }
           />
         )}
