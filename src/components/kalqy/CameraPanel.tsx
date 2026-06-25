@@ -23,12 +23,31 @@ export function CameraPanel({ mode, onModeChange, onMovementDetected, active }: 
   const [activity, setActivity] = useState(0); // 0..1 meter
   const [loadingModel, setLoadingModel] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [permission, setPermission] = useState<"idle" | "prompting" | "granted" | "denied">("idle");
+  const [retryNonce, setRetryNonce] = useState(0);
 
-  // Start / stop webcam based on mode
+  // Check existing permission state when a camera mode is selected
+  useEffect(() => {
+    if (mode === "off") return;
+    const anyNav = navigator as any;
+    if (anyNav?.permissions?.query) {
+      anyNav.permissions
+        .query({ name: "camera" })
+        .then((res: PermissionStatus) => {
+          if (res.state === "granted") setPermission("granted");
+          else if (res.state === "denied") setPermission("denied");
+          else setPermission("idle");
+        })
+        .catch(() => {});
+    }
+  }, [mode]);
+
+  // Start / stop webcam based on mode (only after permission is granted or user clicks Allow)
   useEffect(() => {
     let cancelled = false;
     async function startCam() {
       if (mode === "off") return;
+      if (permission !== "granted") return; // wait for explicit allow
       try {
         setError(null);
         setStatus("Starting camera…");
@@ -47,8 +66,11 @@ export function CameraPanel({ mode, onModeChange, onMovementDetected, active }: 
         }
         setStatus(mode === "preview" ? "Camera on" : "Watching for movement…");
       } catch (e: any) {
-        setError(e?.message || "Camera permission denied");
-        onModeChange("off");
+        const msg = e?.name === "NotAllowedError"
+          ? "Camera access blocked"
+          : e?.message || "Could not start camera";
+        setError(msg);
+        setPermission("denied");
       }
     }
     startCam();
@@ -56,7 +78,34 @@ export function CameraPanel({ mode, onModeChange, onMovementDetected, active }: 
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, permission, retryNonce]);
+
+  const requestPermission = useCallback(async () => {
+    setError(null);
+    setPermission("prompting");
+    setStatus("Asking for camera permission…");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 480, height: 360, facingMode: "user" },
+        audio: false,
+      });
+      // stop here — the startCam effect will create the real stream
+      stream.getTracks().forEach((t) => t.stop());
+      setPermission("granted");
+    } catch (e: any) {
+      const msg = e?.name === "NotAllowedError"
+        ? "Camera access blocked"
+        : e?.message || "Could not start camera";
+      setError(msg);
+      setPermission("denied");
+    }
+  }, []);
+
+  const retry = useCallback(() => {
+    setError(null);
+    setRetryNonce((n) => n + 1);
+    requestPermission();
+  }, [requestPermission]);
 
   // Cleanup stream when going off
   useEffect(() => {
