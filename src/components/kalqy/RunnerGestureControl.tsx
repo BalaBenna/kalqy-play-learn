@@ -207,19 +207,20 @@ export function RunnerGestureControl({ active, controls }: Props) {
     if (holdGestureRef.current !== g) {
       holdGestureRef.current = g;
       holdStartRef.current = now;
+      // Fire immediately on a fresh gesture (after small cooldown).
+      const sinceLast = now - lastFiredRef.current.t;
+      if (sinceLast >= COOLDOWN_MS) {
+        lastFiredRef.current = { g, t: now };
+        fire(g);
+      }
+      setHint(labelOf(g));
       return;
     }
-    const held = now - (holdStartRef.current ?? now);
-    setHint(`${labelOf(g)} — hold steady…`);
-    if (held >= HOLD_MS) {
-      // Cooldown: same gesture cannot fire again until released
-      const last = lastFiredRef.current;
-      const sinceLast = now - last.t;
-      if (last.g === g && sinceLast < 1500) {
-        // already fired for this hold; require release (different gesture)
-        return;
-      }
-      if (sinceLast < COOLDOWN_MS) return;
+    // While the hand stays on the same side, allow repeat moves every 600ms
+    // so the player can switch two lanes by holding.
+    const sinceLast = now - lastFiredRef.current.t;
+    setHint(labelOf(g));
+    if (sinceLast >= 600) {
       lastFiredRef.current = { g, t: now };
       fire(g);
     }
@@ -236,7 +237,10 @@ export function RunnerGestureControl({ active, controls }: Props) {
       const video = videoRef.current;
       if (!video) return;
       video.srcObject = stream;
-      await video.play();
+      try { await video.play(); } catch (e: any) {
+        if (e?.name === "AbortError") return; // unmounted/remounted, ignore
+        throw e;
+      }
       await initLandmarker();
       setStatus("ready");
       loop();
