@@ -65,10 +65,19 @@ function Index() {
     <div className="flex min-h-screen w-full bg-background">
       <Sidebar view={view} onNavigate={setView} />
       <main className="flex-1 overflow-x-hidden">
-        {view === "dashboard" ? (
+        {view === "dashboard" && (
           <Dashboard stats={stats} onPlay={() => setView("game")} />
-        ) : (
+        )}
+        {view === "game" && (
           <GameScreen onBack={() => setView("dashboard")} onComplete={handleComplete} />
+        )}
+        {view === "finger-quiz" && (
+          <FingerGestureQuiz
+            onBack={() => setView("dashboard")}
+            onComplete={(s) =>
+              setStats((p) => ({ ...p, gamesPlayed: p.gamesPlayed + 1, stars: p.stars + s }))
+            }
+          />
         )}
       </main>
     </div>
