@@ -49,6 +49,7 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
     jump: () => void;
     slide: () => void;
     start: () => void;
+    resetWorld: () => void;
   } | null>(null);
 
   const start = useCallback(() => {
@@ -67,6 +68,7 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
       spawnT: 0,
       coinSpawnT: 0,
     };
+    ctrlRef.current?.resetWorld();
     setScore(0);
     setCoins(0);
     setPhase("playing");
