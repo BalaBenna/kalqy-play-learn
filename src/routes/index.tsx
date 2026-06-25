@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Sidebar, type View } from "@/components/kalqy/Sidebar";
 import { Dashboard, type Stats } from "@/components/kalqy/Dashboard";
 import { GameScreen, type GameResult } from "@/components/kalqy/GameScreen";
+import { FingerGestureQuiz } from "@/components/kalqy/FingerGestureQuiz";
 
 export const Route = createFileRoute("/")({
   head: () => ({
