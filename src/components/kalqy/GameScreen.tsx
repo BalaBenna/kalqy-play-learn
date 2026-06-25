@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, RotateCcw, Star, Volume2 } from "lucide-react";
+import { CameraPanel, type CameraMode } from "./CameraPanel";
 
 export interface GameResult {
   stars: number;
