@@ -9,18 +9,22 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export type View = "dashboard" | "game";
+export type View = "dashboard" | "game" | "finger-quiz";
 
 interface SidebarProps {
   view: View;
   onNavigate: (view: View) => void;
 }
 
-const ageGroups = [
+const ageGroups: {
+  label: string;
+  games: { name: string; active: boolean; view?: View }[];
+}[] = [
   {
     label: "Preschool 3–4",
     games: [
-      { name: "Animal Walk Adventure", active: true },
+      { name: "Animal Walk Adventure", active: true, view: "game" },
+      { name: "Finger Gesture Quiz", active: true, view: "finger-quiz" },
       { name: "Colour Hunt", active: false },
       { name: "Shape Catcher", active: false },
       { name: "Sound Safari", active: false },
@@ -106,12 +110,13 @@ export function Sidebar({ view, onNavigate }: SidebarProps) {
                       </span>
                     )}
                     {age.games.map((g) => {
-                      const isActive = g.active && view === "game";
+                      const target = g.view ?? "game";
+                      const isActive = g.active && view === target;
                       return (
                         <button
                           key={g.name}
                           disabled={!g.active}
-                          onClick={() => g.active && onNavigate("game")}
+                          onClick={() => g.active && onNavigate(target)}
                           className={`flex items-center justify-between rounded-xl px-2 py-1.5 text-left text-xs font-semibold transition-all ${
                             isActive
                               ? "bg-primary text-primary-foreground shadow"
