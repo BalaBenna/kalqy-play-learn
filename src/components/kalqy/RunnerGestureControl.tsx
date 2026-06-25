@@ -206,7 +206,7 @@ export function RunnerGestureControl({ active, controls }: Props) {
     setCurrent(g);
 
     if (g === "none") {
-      setHint("Point ← → · Open palm ↑ · Fist ↓");
+      setHint("Left hand ← · Right hand → · Palm ↑ · Fist ↓");
       holdStartRef.current = null;
       holdGestureRef.current = "none";
       return;
