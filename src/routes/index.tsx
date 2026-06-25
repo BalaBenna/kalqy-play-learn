@@ -94,6 +94,19 @@ function Index() {
             }
           />
         )}
+        {view === "math-adventure" && (
+          <MathAdventure
+            onBack={() => setView("dashboard")}
+            onComplete={({ correct }) =>
+              setStats((p) => ({
+                ...p,
+                gamesPlayed: p.gamesPlayed + 1,
+                stars: p.stars + Math.min(5, Math.ceil(correct / 2)),
+                bodyAwareness: Math.min(100, p.bodyAwareness + 2),
+              }))
+            }
+          />
+        )}
       </main>
     </div>
   );
