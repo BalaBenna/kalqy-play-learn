@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
 import { ArrowLeft, Play, RotateCw, Coins, Trophy, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { RunnerGestureControl } from "./RunnerGestureControl";
 
 interface EndlessRunnerProps {
   onBack: () => void;
