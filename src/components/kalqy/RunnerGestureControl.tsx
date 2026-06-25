@@ -35,19 +35,20 @@ function thumbExtended(lm: { x: number; y: number }[]): boolean {
   return Math.abs(lm[4].x - lm[2].x) > 0.08;
 }
 
-// Classify by detected handedness first: left hand moves left, right hand moves right.
-function classify(lm: { x: number; y: number }[], handednessLabel?: string): Gesture {
+// Classify purely by hand position in the (non-mirrored) raw video frame.
+// The on-screen video is CSS-mirrored, so what the user sees on the LEFT of
+// the screen is on the RIGHT of the raw frame (wristX > 0.5) — that's the
+// hand they perceive as "left", and should move the player left.
+// MediaPipe's handedness label is unreliable here because it assumes a
+// pre-mirrored selfie image, so we ignore it.
+function classify(lm: { x: number; y: number }[]): Gesture {
   if (!lm || lm.length < 21) return "none";
-  const label = handednessLabel?.toLowerCase();
-  if (label === "left") return "left";
-  if (label === "right") return "right";
-
-  // Fallback when handedness is unavailable: camera feed is not mirrored at the
-  // model, so the user's left hand appears on the right side of the raw frame.
-  const wristX = lm[0].x;
-  if (wristX > 0.55) return "left";   // user's left hand
-  if (wristX < 0.45) return "right";  // user's right hand
-  return "none";
+  // Average a few keypoints for stability instead of just the wrist.
+  const xs = [0, 5, 9, 13, 17].map((i) => lm[i].x);
+  const avgX = xs.reduce((a, b) => a + b, 0) / xs.length;
+  if (avgX > 0.60) return "left";
+  if (avgX < 0.40) return "right";
+  return "none"; // dead-zone in the middle to avoid jitter
 }
 
 const HAND_CONNECTIONS: [number, number][] = [
