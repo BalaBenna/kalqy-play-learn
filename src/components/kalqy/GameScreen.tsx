@@ -70,6 +70,7 @@ export function GameScreen({ onBack, onComplete }: GameScreenProps) {
   const [stars, setStars] = useState(0);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
   const [confetti, setConfetti] = useState(false);
+  const [cameraMode, setCameraMode] = useState<CameraMode>("off");
   const movementsRef = useRef<Record<string, number>>({});
 
   const sequence = useMemo(() => {
