@@ -16,7 +16,6 @@ interface Props {
 type Status = "idle" | "loading" | "ready" | "denied" | "error";
 type Gesture = "left" | "right" | "jump" | "slide" | "none";
 
-const HOLD_MS = 350;
 const COOLDOWN_MS = 320;
 
 // Count extended fingers (index, middle, ring, pinky). Thumb excluded.
@@ -36,13 +35,15 @@ function thumbExtended(lm: { x: number; y: number }[]): boolean {
   return Math.abs(lm[4].x - lm[2].x) > 0.08;
 }
 
-// Classify gesture. Returns "none" if uncertain.
-// Priority: open palm -> jump, fist -> slide, otherwise use which side of
-// the frame the hand is on (user's left hand -> moveLeft, right hand -> moveRight).
-// NOTE: camera feed is NOT mirrored at the model; preview is mirrored via CSS.
-// In raw frame coords, the user's LEFT hand appears on the right side (x > 0.5).
-function classify(lm: { x: number; y: number }[]): Gesture {
+// Classify by detected handedness first: left hand moves left, right hand moves right.
+function classify(lm: { x: number; y: number }[], handednessLabel?: string): Gesture {
   if (!lm || lm.length < 21) return "none";
+  const label = handednessLabel?.toLowerCase();
+  if (label === "left") return "left";
+  if (label === "right") return "right";
+
+  // Fallback when handedness is unavailable: camera feed is not mirrored at the
+  // model, so the user's left hand appears on the right side of the raw frame.
   const wristX = lm[0].x;
   if (wristX > 0.55) return "left";   // user's left hand
   if (wristX < 0.45) return "right";  // user's right hand
@@ -191,7 +192,8 @@ export function RunnerGestureControl({ active, controls }: Props) {
     }
 
     const lm = hands[0];
-    const g = classify(lm);
+    const handednessLabel = result?.handednesses?.[0]?.[0]?.categoryName;
+    const g = classify(lm, handednessLabel);
     const color = g === "none" ? "#94a3b8" : "#22c55e";
     drawHand(ctx, lm, w, h, color);
     setCurrent(g);
