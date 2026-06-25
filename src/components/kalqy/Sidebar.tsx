@@ -9,7 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export type View = "dashboard" | "game" | "finger-quiz" | "endless-runner";
+export type View = "dashboard" | "game" | "finger-quiz" | "endless-runner" | "math-adventure";
 
 interface SidebarProps {
   view: View;
