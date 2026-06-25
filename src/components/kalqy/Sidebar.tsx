@@ -110,12 +110,13 @@ export function Sidebar({ view, onNavigate }: SidebarProps) {
                       </span>
                     )}
                     {age.games.map((g) => {
-                      const isActive = g.active && view === "game";
+                      const target = g.view ?? "game";
+                      const isActive = g.active && view === target;
                       return (
                         <button
                           key={g.name}
                           disabled={!g.active}
-                          onClick={() => g.active && onNavigate("game")}
+                          onClick={() => g.active && onNavigate(target)}
                           className={`flex items-center justify-between rounded-xl px-2 py-1.5 text-left text-xs font-semibold transition-all ${
                             isActive
                               ? "bg-primary text-primary-foreground shadow"
