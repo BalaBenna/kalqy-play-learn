@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Camera, CameraOff, Eye, Activity, Sparkles, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Camera, CameraOff, Eye, Activity, Sparkles, Loader2, ShieldAlert, RotateCw } from "lucide-react";
 
 export type CameraMode = "off" | "preview" | "motion" | "pose";
 
