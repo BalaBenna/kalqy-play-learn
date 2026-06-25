@@ -176,11 +176,19 @@ export function GameScreen({ onBack, onComplete }: GameScreenProps) {
         <div className="flex flex-1 items-center justify-center">
           {phase === "start" && <StartScreen onStart={start} />}
           {phase === "playing" && current && (
-            <PlayScreen
-              current={current}
-              feedback={feedback}
-              onPick={handlePick}
-            />
+            <div className="grid w-full gap-5 md:grid-cols-[1fr_320px] md:items-start">
+              <PlayScreen
+                current={current}
+                feedback={feedback}
+                onPick={handlePick}
+              />
+              <CameraPanel
+                mode={cameraMode}
+                onModeChange={setCameraMode}
+                active={!feedback}
+                onMovementDetected={() => handlePick(current)}
+              />
+            </div>
           )}
           {phase === "end" && (
             <EndScreen
