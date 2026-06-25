@@ -43,15 +43,6 @@ function thumbExtended(lm: { x: number; y: number }[]): boolean {
 // In raw frame coords, the user's LEFT hand appears on the right side (x > 0.5).
 function classify(lm: { x: number; y: number }[]): Gesture {
   if (!lm || lm.length < 21) return "none";
-  const fingers = countFingers(lm);
-  const thumb = thumbExtended(lm);
-
-  // Open palm raised -> jump (4 fingers up)
-  if (fingers === 4) return "jump";
-  // Closed fist -> slide
-  if (fingers === 0 && !thumb) return "slide";
-
-  // Otherwise, decide by which hand (side of frame). Use wrist (0) x.
   const wristX = lm[0].x;
   if (wristX > 0.55) return "left";   // user's left hand
   if (wristX < 0.45) return "right";  // user's right hand
@@ -206,7 +197,7 @@ export function RunnerGestureControl({ active, controls }: Props) {
     setCurrent(g);
 
     if (g === "none") {
-      setHint("Left hand ← · Right hand → · Palm ↑ · Fist ↓");
+      setHint("Left hand ← · Right hand →");
       holdStartRef.current = null;
       holdGestureRef.current = "none";
       return;
