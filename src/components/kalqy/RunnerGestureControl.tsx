@@ -37,9 +37,10 @@ function thumbExtended(lm: { x: number; y: number }[]): boolean {
 }
 
 // Classify gesture. Returns "none" if uncertain.
-// NOTE: landmark coords are in raw (un-mirrored) frame space. Since the user
-// sees a mirrored preview, we flip x for direction: pointing to the user's
-// right reads as smaller raw x.
+// Priority: open palm -> jump, fist -> slide, otherwise use which side of
+// the frame the hand is on (user's left hand -> moveLeft, right hand -> moveRight).
+// NOTE: camera feed is NOT mirrored at the model; preview is mirrored via CSS.
+// In raw frame coords, the user's LEFT hand appears on the right side (x > 0.5).
 function classify(lm: { x: number; y: number }[]): Gesture {
   if (!lm || lm.length < 21) return "none";
   const fingers = countFingers(lm);
@@ -47,26 +48,13 @@ function classify(lm: { x: number; y: number }[]): Gesture {
 
   // Open palm raised -> jump (4 fingers up)
   if (fingers === 4) return "jump";
-  // Closed fist -> slide (0 fingers up, thumb tucked or to the side)
+  // Closed fist -> slide
   if (fingers === 0 && !thumb) return "slide";
 
-  // Pointing: index extended, middle/ring/pinky curled
-  const indexUp = lm[8].y < lm[6].y - 0.02;
-  const middleCurled = lm[12].y > lm[10].y - 0.01;
-  const ringCurled = lm[16].y > lm[14].y - 0.01;
-  const pinkyCurled = lm[20].y > lm[18].y - 0.01;
-  const onlyIndex = indexUp && middleCurled && ringCurled && pinkyCurled;
-
-  if (onlyIndex || fingers === 1) {
-    // Direction from MCP(5) to tip(8): horizontal vector dominates
-    const dx = lm[8].x - lm[5].x;
-    const dy = lm[8].y - lm[5].y;
-    if (Math.abs(dx) > Math.abs(dy) * 0.8 && Math.abs(dx) > 0.05) {
-      // Mirror: raw +x is camera-right = user-left in mirrored preview
-      return dx > 0 ? "left" : "right";
-    }
-  }
-
+  // Otherwise, decide by which hand (side of frame). Use wrist (0) x.
+  const wristX = lm[0].x;
+  if (wristX > 0.55) return "left";   // user's left hand
+  if (wristX < 0.45) return "right";  // user's right hand
   return "none";
 }
 
@@ -218,7 +206,7 @@ export function RunnerGestureControl({ active, controls }: Props) {
     setCurrent(g);
 
     if (g === "none") {
-      setHint("Point ← → · Open palm ↑ · Fist ↓");
+      setHint("Left hand ← · Right hand → · Palm ↑ · Fist ↓");
       holdStartRef.current = null;
       holdGestureRef.current = "none";
       return;
