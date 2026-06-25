@@ -218,11 +218,12 @@ export function RunnerGestureControl({ active, controls }: Props) {
       setHint(labelOf(g));
       return;
     }
-    // While the hand stays on the same side, allow repeat moves every 600ms
-    // so the player can switch two lanes by holding.
+    // While the hand stays on the same side, allow ONE extra repeat after
+    // a longer hold so the player can intentionally cross to the far lane,
+    // but not so fast that holding causes accidental double-switches.
     const sinceLast = now - lastFiredRef.current.t;
     setHint(labelOf(g));
-    if (sinceLast >= 600) {
+    if (sinceLast >= 1100) {
       lastFiredRef.current = { g, t: now };
       fire(g);
     }
