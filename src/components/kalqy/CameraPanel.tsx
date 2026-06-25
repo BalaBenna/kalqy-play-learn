@@ -256,6 +256,45 @@ export function CameraPanel({ mode, onModeChange, onMovementDetected, active }: 
               Tap a mode to turn on the camera
             </div>
           </div>
+        ) : permission !== "granted" ? (
+          <div className="flex h-full w-full items-center justify-center p-4 text-center text-white">
+            <div className="max-w-[220px] space-y-2">
+              {permission === "denied" ? (
+                <>
+                  <ShieldAlert className="mx-auto h-7 w-7 text-coral" />
+                  <div className="text-xs font-black">Camera access blocked</div>
+                  <div className="text-[10px] font-bold text-white/70">
+                    Allow camera in your browser's address bar, then tap retry.
+                  </div>
+                  <button
+                    onClick={retry}
+                    className="mx-auto mt-1 flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-primary-foreground shadow"
+                  >
+                    <RotateCw className="h-3 w-3" /> Retry
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Camera className="mx-auto h-7 w-7 text-jungle" />
+                  <div className="text-xs font-black">Let Kalqy see you move!</div>
+                  <div className="text-[10px] font-bold text-white/70">
+                    We use your camera only on this device — nothing is recorded.
+                  </div>
+                  <button
+                    onClick={requestPermission}
+                    disabled={permission === "prompting"}
+                    className="mx-auto mt-1 flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-primary-foreground shadow disabled:opacity-60"
+                  >
+                    {permission === "prompting" ? (
+                      <><Loader2 className="h-3 w-3 animate-spin" /> Asking…</>
+                    ) : (
+                      <><Camera className="h-3 w-3" /> Allow camera</>
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
         ) : (
           <>
             <video
