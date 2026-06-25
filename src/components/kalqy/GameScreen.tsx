@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, RotateCcw, Star, Volume2 } from "lucide-react";
+import { CameraPanel, type CameraMode } from "./CameraPanel";
 
 export interface GameResult {
   stars: number;
@@ -69,6 +70,7 @@ export function GameScreen({ onBack, onComplete }: GameScreenProps) {
   const [stars, setStars] = useState(0);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
   const [confetti, setConfetti] = useState(false);
+  const [cameraMode, setCameraMode] = useState<CameraMode>("off");
   const movementsRef = useRef<Record<string, number>>({});
 
   const sequence = useMemo(() => {
@@ -174,11 +176,19 @@ export function GameScreen({ onBack, onComplete }: GameScreenProps) {
         <div className="flex flex-1 items-center justify-center">
           {phase === "start" && <StartScreen onStart={start} />}
           {phase === "playing" && current && (
-            <PlayScreen
-              current={current}
-              feedback={feedback}
-              onPick={handlePick}
-            />
+            <div className="grid w-full gap-5 md:grid-cols-[1fr_320px] md:items-start">
+              <PlayScreen
+                current={current}
+                feedback={feedback}
+                onPick={handlePick}
+              />
+              <CameraPanel
+                mode={cameraMode}
+                onModeChange={setCameraMode}
+                active={!feedback}
+                onMovementDetected={() => handlePick(current)}
+              />
+            </div>
           )}
           {phase === "end" && (
             <EndScreen
