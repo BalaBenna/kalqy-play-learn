@@ -245,20 +245,22 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
     }
 
     // Controls
-    const st = stateRef.current;
     const move = (dir: -1 | 1) => {
-      if (stateRef.current.phase !== "playing") return;
+      const st = stateRef.current;
+      if (st.phase !== "playing") return;
       st.lane = Math.max(0, Math.min(2, st.lane + dir));
       st.targetX = LANES[st.lane];
     };
     const jump = () => {
-      if (stateRef.current.phase !== "playing") return;
+      const st = stateRef.current;
+      if (st.phase !== "playing") return;
       if (st.y <= 0.01 && !st.sliding) {
         st.vy = JUMP_V;
       }
     };
     const slide = () => {
-      if (stateRef.current.phase !== "playing") return;
+      const st = stateRef.current;
+      if (st.phase !== "playing") return;
       if (st.y <= 0.01) {
         st.sliding = true;
         st.slideT = SLIDE_TIME;
