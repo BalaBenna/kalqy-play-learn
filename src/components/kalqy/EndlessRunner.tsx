@@ -485,6 +485,21 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
       {/* Canvas mount */}
       <div ref={mountRef} className="absolute inset-0" />
 
+      {/* AI gesture controls (camera) — active during gameplay */}
+      {phase === "playing" && (
+        <div className="absolute right-3 top-16 z-20 md:top-20">
+          <RunnerGestureControl
+            active={phase === "playing"}
+            controls={{
+              moveLeft: () => ctrlRef.current?.move(-1),
+              moveRight: () => ctrlRef.current?.move(1),
+              jump: () => ctrlRef.current?.jump(),
+              slide: () => ctrlRef.current?.slide(),
+            }}
+          />
+        </div>
+      )}
+
       {/* Mobile touch controls */}
       {phase === "playing" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-between p-4 md:hidden">
