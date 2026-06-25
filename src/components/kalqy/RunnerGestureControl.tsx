@@ -192,9 +192,7 @@ export function RunnerGestureControl({ active, controls }: Props) {
       return;
     }
 
-    const lm = hands[0];
-    const handednessLabel = result?.handednesses?.[0]?.[0]?.categoryName;
-    const g = classify(lm, handednessLabel);
+    const g = classify(lm);
     const color = g === "none" ? "#94a3b8" : "#22c55e";
     drawHand(ctx, lm, w, h, color);
     setCurrent(g);
