@@ -26,6 +26,7 @@ const ageGroups: {
       { name: "Animal Walk Adventure", active: true, view: "game" },
       { name: "Finger Gesture Quiz", active: true, view: "finger-quiz" },
       { name: "Endless Runner", active: true, view: "endless-runner" },
+      { name: "Math Adventure", active: true, view: "math-adventure" },
       { name: "Colour Hunt", active: false },
       { name: "Shape Catcher", active: false },
       { name: "Sound Safari", active: false },
