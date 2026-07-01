@@ -108,6 +108,14 @@ function Index() {
             }
           />
         )}
+        {view === "voice-quiz" && (
+          <VoiceObjectQuiz
+            onBack={() => setView("dashboard")}
+            onComplete={(s) =>
+              setStats((p) => ({ ...p, gamesPlayed: p.gamesPlayed + 1, stars: p.stars + s }))
+            }
+          />
+        )}
       </main>
     </div>
   );
