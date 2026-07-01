@@ -339,9 +339,10 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
 
   const current = queue[round];
   const totalTime = useMemo(
-    () => Math.max(MIN_TIME, START_TIME - round * 0.35),
+    () => Math.max(MIN_TIME, START_TIME - round * 0.5),
     [round],
   );
+
 
   /* ---------- lifecycle ---------- */
 
