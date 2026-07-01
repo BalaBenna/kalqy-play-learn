@@ -34,28 +34,23 @@ const BINS: { key: BinKey; label: string; emoji: string; color: string; ring: st
 ];
 
 const TRASH: TrashItem[] = [
-  { emoji: "🍌", name: "banana peel", correct: "compost", hint: "Food scraps go to compost." },
-  { emoji: "🍎", name: "apple core", correct: "compost", hint: "Fruit becomes soil food!" },
-  { emoji: "🍞", name: "old bread", correct: "compost", hint: "Old food helps plants grow." },
-  { emoji: "🥚", name: "egg shell", correct: "compost", hint: "Egg shells enrich the soil." },
-  { emoji: "🍂", name: "dry leaves", correct: "compost", hint: "Leaves turn into compost." },
-  { emoji: "🥕", name: "carrot top", correct: "compost", hint: "Veggie bits go to compost." },
-  { emoji: "📰", name: "newspaper", correct: "recycle", hint: "Paper can be recycled!" },
-  { emoji: "🥤", name: "plastic cup", correct: "recycle", hint: "Clean plastic can be recycled." },
-  { emoji: "🍾", name: "glass bottle", correct: "recycle", hint: "Glass bottles can be recycled." },
-  { emoji: "🥫", name: "tin can", correct: "recycle", hint: "Metal cans get a new life!" },
-  { emoji: "📦", name: "cardboard box", correct: "recycle", hint: "Cardboard is recyclable." },
-  { emoji: "📄", name: "paper sheet", correct: "recycle", hint: "Clean paper is recyclable." },
-  { emoji: "🩹", name: "used bandage", correct: "landfill", hint: "Used bandages go to landfill." },
-  { emoji: "🪥", name: "old toothbrush", correct: "landfill", hint: "Toothbrushes go to landfill." },
-  { emoji: "🧻", name: "used tissue", correct: "landfill", hint: "Used tissues go to landfill." },
-  { emoji: "🖍️", name: "broken crayon", correct: "landfill", hint: "Broken crayons go to landfill." },
+  { emoji: "🍌", name: "banana", correct: "compost", hint: "Banana goes in Compost." },
+  { emoji: "🍎", name: "apple", correct: "compost", hint: "Apple goes in Compost." },
+  { emoji: "🥕", name: "carrot", correct: "compost", hint: "Carrot goes in Compost." },
+  { emoji: "🍂", name: "leaf", correct: "compost", hint: "Leaves go in Compost." },
+  { emoji: "📰", name: "newspaper", correct: "recycle", hint: "Paper goes in Recycle." },
+  { emoji: "📦", name: "box", correct: "recycle", hint: "Boxes go in Recycle." },
+  { emoji: "🥤", name: "plastic cup", correct: "recycle", hint: "Plastic goes in Recycle." },
+  { emoji: "🍾", name: "bottle", correct: "recycle", hint: "Bottles go in Recycle." },
+  { emoji: "🧻", name: "tissue", correct: "landfill", hint: "Tissue goes in Landfill." },
+  { emoji: "🪥", name: "toothbrush", correct: "landfill", hint: "Toothbrush goes in Landfill." },
 ];
 
-const ROUNDS = 10;
-const START_LIVES = 3;
-const START_TIME = 6.5; // seconds per item
-const MIN_TIME = 3.0;
+const ROUNDS = 6;
+const START_LIVES = 5;
+const START_TIME = 12; // seconds per item
+const MIN_TIME = 8;
+
 
 /* --------------------------- Helpers --------------------------- */
 
