@@ -8,7 +8,12 @@ interface Props {
 
 export function StickerBook({ onBack }: Props) {
   const [, force] = useState(0);
-  useEffect(() => subscribeRewards(() => force((n) => n + 1)), []);
+  useEffect(() => {
+    const unsub = subscribeRewards(() => force((n) => n + 1));
+    return () => {
+      unsub();
+    };
+  }, []);
   const rewards = getRewards();
 
   return (
