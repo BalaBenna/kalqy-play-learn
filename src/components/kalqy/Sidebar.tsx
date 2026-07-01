@@ -21,6 +21,7 @@ export type View =
   | "voice-quiz"
   | "feeling-pond"
   | "clean-earth"
+  | "vocab-face"
   | "sticker-book"
   | "leaderboard";
 
@@ -48,7 +49,12 @@ const ageGroups: {
       { name: "Shape Catcher", active: false },
     ],
   },
-  { label: "LKG 4–5", games: [] },
+  {
+    label: "LKG 4–5",
+    games: [
+      { name: "Vocab Face Quiz 📖", active: true, view: "vocab-face" },
+    ],
+  },
   {
     label: "UKG 5–6",
     games: [
