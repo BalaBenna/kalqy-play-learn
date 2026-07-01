@@ -11,6 +11,7 @@ import { FeelingPond } from "@/components/kalqy/FeelingPond";
 import { StickerBook } from "@/components/kalqy/StickerBook";
 import { Leaderboard } from "@/components/kalqy/Leaderboard";
 import { CleanEarthHero } from "@/components/kalqy/CleanEarthHero";
+import { VocabFaceQuiz } from "@/components/kalqy/VocabFaceQuiz";
 import { getRole, setRole as saveRole, type Role } from "@/lib/roles";
 
 export const Route = createFileRoute("/")({
