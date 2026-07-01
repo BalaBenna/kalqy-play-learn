@@ -157,6 +157,7 @@ export function getInferences(): string[] {
     "voice-quiz",
     "feeling-pond",
     "clean-earth",
+    "vocab-face",
   ];
   const unplayed = allGames.filter((g) => !played.has(g));
   if (unplayed.length) out.push(`Not tried yet: ${unplayed.map(labelGame).slice(0, 2).join(", ")}`);
