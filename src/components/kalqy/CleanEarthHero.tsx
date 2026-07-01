@@ -363,7 +363,7 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
     setPhase("playing");
     logEvent({ game: "clean-earth", type: "session-start" });
     tickStreak();
-    setTimeout(() => speak(`Where does the ${q[0].name} go?`), 250);
+    setTimeout(() => speak(`Which bin for the ${q[0].name}? Wet, Dry, or Other?`), 400);
   }, []);
 
   // Timer
