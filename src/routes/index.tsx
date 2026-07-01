@@ -10,6 +10,7 @@ import { VoiceObjectQuiz } from "@/components/kalqy/VoiceObjectQuiz";
 import { FeelingPond } from "@/components/kalqy/FeelingPond";
 import { StickerBook } from "@/components/kalqy/StickerBook";
 import { Leaderboard } from "@/components/kalqy/Leaderboard";
+import { CleanEarthHero } from "@/components/kalqy/CleanEarthHero";
 import { getRole, setRole as saveRole, type Role } from "@/lib/roles";
 
 export const Route = createFileRoute("/")({
@@ -137,6 +138,19 @@ function Index() {
             onBack={() => setView("dashboard")}
             onComplete={(s) =>
               setStats((p) => ({ ...p, gamesPlayed: p.gamesPlayed + 1, stars: p.stars + s }))
+            }
+          />
+        )}
+        {view === "clean-earth" && (
+          <CleanEarthHero
+            onBack={() => setView("dashboard")}
+            onComplete={({ correct, coins }) =>
+              setStats((p) => ({
+                ...p,
+                gamesPlayed: p.gamesPlayed + 1,
+                stars: p.stars + Math.min(5, Math.ceil(correct / 2)),
+                coordination: Math.min(100, p.coordination + Math.floor(coins / 4)),
+              }))
             }
           />
         )}
