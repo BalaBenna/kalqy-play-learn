@@ -7,7 +7,8 @@ export type Skill =
   | "bodyAwareness"
   | "vocabulary"
   | "emotional"
-  | "numeracy";
+  | "numeracy"
+  | "environmental";
 
 export type GameId =
   | "animal-walk"
@@ -15,7 +16,8 @@ export type GameId =
   | "endless-runner"
   | "math-adventure"
   | "voice-quiz"
-  | "feeling-pond";
+  | "feeling-pond"
+  | "clean-earth";
 
 export type EventType =
   | "session-start"
