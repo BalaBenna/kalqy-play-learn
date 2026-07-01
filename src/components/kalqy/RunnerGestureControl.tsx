@@ -46,8 +46,8 @@ function classify(lm: { x: number; y: number }[]): Gesture {
   // Average a few keypoints for stability instead of just the wrist.
   const xs = [0, 5, 9, 13, 17].map((i) => lm[i].x);
   const avgX = xs.reduce((a, b) => a + b, 0) / xs.length;
-  if (avgX > 0.60) return "left";
-  if (avgX < 0.40) return "right";
+  if (avgX > 0.60) return "right";
+  if (avgX < 0.40) return "left";
   return "none"; // dead-zone in the middle to avoid jitter
 }
 
