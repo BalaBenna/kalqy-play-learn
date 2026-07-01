@@ -6,6 +6,7 @@ import { GameScreen, type GameResult } from "@/components/kalqy/GameScreen";
 import { FingerGestureQuiz } from "@/components/kalqy/FingerGestureQuiz";
 import { EndlessRunner } from "@/components/kalqy/EndlessRunner";
 import { MathAdventure } from "@/components/kalqy/MathAdventure";
+import { VoiceObjectQuiz } from "@/components/kalqy/VoiceObjectQuiz";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -104,6 +105,14 @@ function Index() {
                 stars: p.stars + Math.min(5, Math.ceil(correct / 2)),
                 bodyAwareness: Math.min(100, p.bodyAwareness + 2),
               }))
+            }
+          />
+        )}
+        {view === "voice-quiz" && (
+          <VoiceObjectQuiz
+            onBack={() => setView("dashboard")}
+            onComplete={(s) =>
+              setStats((p) => ({ ...p, gamesPlayed: p.gamesPlayed + 1, stars: p.stars + s }))
             }
           />
         )}
