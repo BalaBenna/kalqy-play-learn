@@ -13,10 +13,12 @@ type Phase = "start" | "playing" | "over";
 const LANES = [-2, 0, 2];
 const LANE_WIDTH = 2;
 const GRAVITY = -55;
-const JUMP_V = 18;
+const JUMP_V = 15;
 const SLIDE_TIME = 0.7;
-const BASE_SPEED = 18;
-const SPEED_GROWTH = 0.4; // per second
+const BASE_SPEED = 12;
+const SPEED_GROWTH = 0.2; // per second
+const SPAWN_GAP = 12;
+const BASE_SPAWN_INTERVAL = SPAWN_GAP / BASE_SPEED;
 
 export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -361,7 +363,7 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
         player.rotation.x = s.sliding ? -0.3 : 0;
 
         // Leg run animation
-        animT += dt * 14;
+        animT += dt * 10;
         const swing = Math.sin(animT) * 0.5;
         legFL.position.z = 0.2 + swing * 0.2;
         legFR.position.z = 0.2 - swing * 0.2;
@@ -428,7 +430,7 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
         s.spawnT -= dt;
         if (s.spawnT <= 0) {
           spawnObstacle(110);
-          s.spawnT = Math.max(0.55, 1.4 - s.elapsed * 0.02);
+          s.spawnT = Math.max(0.55, SPAWN_GAP / s.speed);
         }
         s.coinSpawnT -= dt;
         if (s.coinSpawnT <= 0) {
