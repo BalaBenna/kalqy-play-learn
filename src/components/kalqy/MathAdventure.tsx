@@ -882,9 +882,12 @@ export function MathAdventure({ onBack, onComplete }: Props) {
       holdCountRef.current = null;
       setHoldProgress(0);
       const q = questionRef.current;
-      if (q && choice < q.options.length) submitAnswer(choice);
+      const q = questionRef.current;
+      if (q && choice < q.options.length) submitAnswerRef.current(choice);
     }
   };
+  submitAnswerRef.current = submitAnswer;
+  drawAndCountRef.current = drawAndCount;
 
   useEffect(() => {
     if (phase === "playing") startCamera();
