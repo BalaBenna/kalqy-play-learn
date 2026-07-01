@@ -21,6 +21,7 @@ export type View =
   | "voice-quiz"
   | "feeling-pond"
   | "clean-earth"
+  | "vocab-face"
   | "sticker-book"
   | "leaderboard";
 
