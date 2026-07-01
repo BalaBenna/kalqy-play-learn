@@ -318,11 +318,12 @@ function skillColor(s: Skill): string {
       vocabulary: "sunshine",
       emotional: "coral",
       numeracy: "sunshine",
+      environmental: "leaf",
     } as const
   )[s];
 }
 function skillEmoji(s: Skill): string {
-  return ({ balance: "⚖️", coordination: "🤸", bodyAwareness: "🧘", vocabulary: "🔤", emotional: "💖", numeracy: "🔢" } as const)[s];
+  return ({ balance: "⚖️", coordination: "🤸", bodyAwareness: "🧘", vocabulary: "🔤", emotional: "💖", numeracy: "🔢", environmental: "🌍" } as const)[s];
 }
 
 function StatCard({
