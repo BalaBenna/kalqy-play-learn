@@ -13,10 +13,12 @@ type Phase = "start" | "playing" | "over";
 const LANES = [-2, 0, 2];
 const LANE_WIDTH = 2;
 const GRAVITY = -55;
-const JUMP_V = 18;
+const JUMP_V = 15;
 const SLIDE_TIME = 0.7;
-const BASE_SPEED = 18;
-const SPEED_GROWTH = 0.4; // per second
+const BASE_SPEED = 12;
+const SPEED_GROWTH = 0.2; // per second
+const SPAWN_GAP = 12;
+const BASE_SPAWN_INTERVAL = SPAWN_GAP / BASE_SPEED;
 
 export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
   const mountRef = useRef<HTMLDivElement>(null);
