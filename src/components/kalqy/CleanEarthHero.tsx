@@ -60,9 +60,10 @@ function speak(text: string) {
   try {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.95;
-    u.pitch = 1.1;
+    u.rate = 0.8;
+    u.pitch = 1.15;
     u.volume = 1;
+
     window.speechSynthesis.speak(u);
   } catch {}
 }
