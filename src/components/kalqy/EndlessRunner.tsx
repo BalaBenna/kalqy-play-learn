@@ -430,7 +430,7 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
         s.spawnT -= dt;
         if (s.spawnT <= 0) {
           spawnObstacle(110);
-          s.spawnT = Math.max(0.55, 1.4 - s.elapsed * 0.02);
+          s.spawnT = Math.max(0.55, SPAWN_GAP / s.speed);
         }
         s.coinSpawnT -= dt;
         if (s.coinSpawnT <= 0) {
