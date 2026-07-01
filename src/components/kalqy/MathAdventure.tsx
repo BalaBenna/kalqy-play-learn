@@ -660,6 +660,8 @@ export function MathAdventure({ onBack, onComplete }: Props) {
   const lockedRef = useRef(false);
   const questionRef = useRef<Question | null>(null);
   questionRef.current = question;
+  const submitAnswerRef = useRef<(choice: number) => void>(() => {});
+  const drawAndCountRef = useRef<(result: any) => void>(() => {});
 
   const startGame = (diff: Difficulty) => {
     setDifficulty(diff);
@@ -817,7 +819,7 @@ export function MathAdventure({ onBack, onComplete }: Props) {
         lastVideoTimeRef.current = video.currentTime;
         try {
           const result = landmarker.detectForVideo(video, performance.now());
-          drawAndCount(result);
+          drawAndCountRef.current(result);
         } catch {}
       }
       rafRef.current = requestAnimationFrame(tick);
@@ -880,9 +882,11 @@ export function MathAdventure({ onBack, onComplete }: Props) {
       holdCountRef.current = null;
       setHoldProgress(0);
       const q = questionRef.current;
-      if (q && choice < q.options.length) submitAnswer(choice);
+      if (q && choice < q.options.length) submitAnswerRef.current(choice);
     }
   };
+  submitAnswerRef.current = submitAnswer;
+  drawAndCountRef.current = drawAndCount;
 
   useEffect(() => {
     if (phase === "playing") startCamera();
