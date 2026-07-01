@@ -309,7 +309,7 @@ function PlayScreen({
         <div className="text-8xl md:text-9xl animate-bounce-soft">{current.emoji}</div>
         <div className="text-lg font-black text-jungle mt-1">{current.sound}</div>
         <h2 className="mt-2 text-2xl font-black md:text-4xl">
-          Do a {LADDER[Math.min(4, [current.movement].length && 0)]}… like a {current.name}!
+          {current.verb.charAt(0).toUpperCase() + current.verb.slice(1)} like a {current.name}!
         </h2>
         {feedback?.type === "correct" && (
           <div className="mt-4 animate-pop text-2xl font-black text-jungle">
