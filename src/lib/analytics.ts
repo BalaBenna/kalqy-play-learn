@@ -7,7 +7,8 @@ export type Skill =
   | "bodyAwareness"
   | "vocabulary"
   | "emotional"
-  | "numeracy";
+  | "numeracy"
+  | "environmental";
 
 export type GameId =
   | "animal-walk"
@@ -15,7 +16,8 @@ export type GameId =
   | "endless-runner"
   | "math-adventure"
   | "voice-quiz"
-  | "feeling-pond";
+  | "feeling-pond"
+  | "clean-earth";
 
 export type EventType =
   | "session-start"
@@ -101,6 +103,7 @@ export function getSkillTrend(): Record<Skill, number> {
     vocabulary: 25,
     emotional: 20,
     numeracy: 25,
+    environmental: 20,
   };
   for (const e of all()) {
     if (e.type === "correct" && e.skill) {
@@ -152,6 +155,7 @@ export function getInferences(): string[] {
     "math-adventure",
     "voice-quiz",
     "feeling-pond",
+    "clean-earth",
   ];
   const unplayed = allGames.filter((g) => !played.has(g));
   if (unplayed.length) out.push(`Not tried yet: ${unplayed.map(labelGame).slice(0, 2).join(", ")}`);
@@ -167,6 +171,7 @@ export function labelSkill(s: Skill): string {
       vocabulary: "Vocabulary",
       emotional: "Emotional Literacy",
       numeracy: "Numeracy",
+      environmental: "Environmental Awareness",
     } as const
   )[s];
 }
@@ -180,6 +185,7 @@ export function labelGame(g: GameId): string {
       "math-adventure": "Math Adventure",
       "voice-quiz": "Say the Word",
       "feeling-pond": "Feeling Pond",
+      "clean-earth": "Clean Earth Hero",
     } as const
   )[g];
 }

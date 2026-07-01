@@ -20,6 +20,7 @@ export type View =
   | "math-adventure"
   | "voice-quiz"
   | "feeling-pond"
+  | "clean-earth"
   | "sticker-book"
   | "leaderboard";
 
@@ -48,7 +49,12 @@ const ageGroups: {
     ],
   },
   { label: "LKG 4–5", games: [] },
-  { label: "UKG 5–6", games: [] },
+  {
+    label: "UKG 5–6",
+    games: [
+      { name: "Clean Earth Hero 🌍", active: true, view: "clean-earth" },
+    ],
+  },
 ];
 
 export function Sidebar({ view, onNavigate, role, onRoleChange }: SidebarProps) {

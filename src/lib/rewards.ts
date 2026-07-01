@@ -20,6 +20,7 @@ export const STICKERS: Sticker[] = [
   { id: "word-wizard", name: "Word Wizard", emoji: "🪄", description: "Said 3 words right!", color: "sky" },
   { id: "number-ninja", name: "Number Ninja", emoji: "🔢", description: "Solved a math puzzle!", color: "sunshine" },
   { id: "streak-star", name: "Streak Star", emoji: "⭐", description: "Played 3 days in a row!", color: "sunshine" },
+  { id: "earth-hero", name: "Earth Hero", emoji: "🌍", description: "Sorted trash like a pro!", color: "leaf" },
 ];
 
 const KEY = "kalqy.rewards.v1";
