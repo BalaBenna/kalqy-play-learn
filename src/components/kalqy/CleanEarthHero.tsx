@@ -442,7 +442,7 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
           setAnswered(false);
           setFeedback(null);
           setLane(1);
-          setTimeLeft(Math.max(MIN_TIME, START_TIME - (round + 1) * 0.35));
+          setTimeLeft(Math.max(MIN_TIME, START_TIME - (round + 1) * 0.5));
           if (!isRight && lives - 1 <= 0) {
             endGame();
             return;
@@ -453,12 +453,16 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
           }
           setRound((r) => {
             const nr = r + 1;
-            setTimeout(() => queue[nr] && speak(`Where does the ${queue[nr].name} go?`), 150);
+            setTimeout(
+              () => queue[nr] && speak(`Which bin for the ${queue[nr].name}? Wet, Dry, or Other?`),
+              300,
+            );
             return nr;
           });
         },
-        isRight ? 1100 : 1600,
+        isRight ? 1800 : 2600,
       );
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [answered, current, streak, lives, round, queue],
