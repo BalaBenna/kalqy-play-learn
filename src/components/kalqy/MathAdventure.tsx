@@ -819,7 +819,7 @@ export function MathAdventure({ onBack, onComplete }: Props) {
         lastVideoTimeRef.current = video.currentTime;
         try {
           const result = landmarker.detectForVideo(video, performance.now());
-          drawAndCount(result);
+          drawAndCountRef.current(result);
         } catch {}
       }
       rafRef.current = requestAnimationFrame(tick);
