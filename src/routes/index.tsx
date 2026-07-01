@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar, type View } from "@/components/kalqy/Sidebar";
 import { Dashboard, type Stats } from "@/components/kalqy/Dashboard";
 import { GameScreen, type GameResult } from "@/components/kalqy/GameScreen";
@@ -7,6 +7,10 @@ import { FingerGestureQuiz } from "@/components/kalqy/FingerGestureQuiz";
 import { EndlessRunner } from "@/components/kalqy/EndlessRunner";
 import { MathAdventure } from "@/components/kalqy/MathAdventure";
 import { VoiceObjectQuiz } from "@/components/kalqy/VoiceObjectQuiz";
+import { FeelingPond } from "@/components/kalqy/FeelingPond";
+import { StickerBook } from "@/components/kalqy/StickerBook";
+import { Leaderboard } from "@/components/kalqy/Leaderboard";
+import { getRole, setRole as saveRole, type Role } from "@/lib/roles";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +24,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "KALQY — Move · Play · Learn" },
       {
         property: "og:description",
-        content: "Animal Walk Adventure and more — gross motor games for preschoolers.",
+        content: "Animal Walk, Feeling Pond, Endless Runner and more — NEP-aligned games for preschoolers.",
       },
     ],
   }),
@@ -36,6 +40,7 @@ const SKILL_MAP: Record<string, keyof Pick<Stats, "balance" | "coordination" | "
 
 function Index() {
   const [view, setView] = useState<View>("dashboard");
+  const [role, setRoleState] = useState<Role>("kid");
   const [stats, setStats] = useState<Stats>({
     gamesPlayed: 0,
     stars: 0,
@@ -44,19 +49,24 @@ function Index() {
     bodyAwareness: 30,
   });
 
+  useEffect(() => {
+    setRoleState(getRole());
+  }, []);
+
+  const changeRole = (r: Role) => {
+    setRoleState(r);
+    saveRole(r);
+  };
+
   const handleComplete = (result: GameResult) => {
     setStats((prev) => {
       const next = { ...prev };
       next.gamesPlayed += 1;
       next.stars += result.stars;
-      // Bump skill scores based on movements practiced
       for (const [movement, count] of Object.entries(result.movements)) {
         const skill = SKILL_MAP[movement];
-        if (skill) {
-          next[skill] = Math.min(100, next[skill] + count * 6);
-        }
+        if (skill) next[skill] = Math.min(100, next[skill] + count * 6);
       }
-      // Small global bump for completing a game
       next.balance = Math.min(100, next.balance + 2);
       next.coordination = Math.min(100, next.coordination + 2);
       next.bodyAwareness = Math.min(100, next.bodyAwareness + 2);
@@ -66,13 +76,27 @@ function Index() {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <Sidebar view={view} onNavigate={setView} />
+      <Sidebar view={view} onNavigate={setView} role={role} onRoleChange={changeRole} />
       <main className="flex-1 overflow-x-hidden">
         {view === "dashboard" && (
-          <Dashboard stats={stats} onPlay={() => setView("game")} />
+          <Dashboard
+            role={role}
+            stats={stats}
+            onPlay={() => setView("game")}
+            onOpenStickers={() => setView("sticker-book")}
+            onOpenLeaderboard={() => setView("leaderboard")}
+          />
         )}
         {view === "game" && (
           <GameScreen onBack={() => setView("dashboard")} onComplete={handleComplete} />
+        )}
+        {view === "feeling-pond" && (
+          <FeelingPond
+            onBack={() => setView("dashboard")}
+            onComplete={(s) =>
+              setStats((p) => ({ ...p, gamesPlayed: p.gamesPlayed + 1, stars: p.stars + s }))
+            }
+          />
         )}
         {view === "finger-quiz" && (
           <FingerGestureQuiz
@@ -116,6 +140,8 @@ function Index() {
             }
           />
         )}
+        {view === "sticker-book" && <StickerBook onBack={() => setView("dashboard")} />}
+        {view === "leaderboard" && <Leaderboard onBack={() => setView("dashboard")} />}
       </main>
     </div>
   );
