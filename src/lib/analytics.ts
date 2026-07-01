@@ -188,6 +188,7 @@ export function labelGame(g: GameId): string {
       "voice-quiz": "Say the Word",
       "feeling-pond": "Feeling Pond",
       "clean-earth": "Clean Earth Hero",
+      "vocab-face": "Vocab Face Quiz",
     } as const
   )[g];
 }
