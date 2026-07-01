@@ -660,6 +660,8 @@ export function MathAdventure({ onBack, onComplete }: Props) {
   const lockedRef = useRef(false);
   const questionRef = useRef<Question | null>(null);
   questionRef.current = question;
+  const submitAnswerRef = useRef<(choice: number) => void>(() => {});
+  const drawAndCountRef = useRef<(result: any) => void>(() => {});
 
   const startGame = (diff: Difficulty) => {
     setDifficulty(diff);
