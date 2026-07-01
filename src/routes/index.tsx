@@ -155,6 +155,19 @@ function Index() {
             }
           />
         )}
+        {view === "vocab-face" && (
+          <VocabFaceQuiz
+            onBack={() => setView("dashboard")}
+            onComplete={({ correct, coins }) =>
+              setStats((p) => ({
+                ...p,
+                gamesPlayed: p.gamesPlayed + 1,
+                stars: p.stars + Math.min(5, Math.ceil(correct / 2)),
+                coordination: Math.min(100, p.coordination + Math.floor(coins / 6)),
+              }))
+            }
+          />
+        )}
         {view === "sticker-book" && <StickerBook onBack={() => setView("dashboard")} />}
         {view === "leaderboard" && <Leaderboard onBack={() => setView("dashboard")} />}
       </main>
