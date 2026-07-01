@@ -28,28 +28,29 @@ interface TrashItem {
 }
 
 const BINS: { key: BinKey; label: string; emoji: string; color: string; ring: string }[] = [
-  { key: "compost", label: "Compost", emoji: "🌱", color: "bg-leaf", ring: "ring-leaf" },
-  { key: "recycle", label: "Recycle", emoji: "♻️", color: "bg-sky", ring: "ring-sky" },
-  { key: "landfill", label: "Landfill", emoji: "🗑️", color: "bg-coral", ring: "ring-coral" },
+  { key: "compost", label: "Wet Waste", emoji: "🥬", color: "bg-leaf", ring: "ring-leaf" },
+  { key: "recycle", label: "Dry Waste", emoji: "♻️", color: "bg-sky", ring: "ring-sky" },
+  { key: "landfill", label: "Other Waste", emoji: "🗑️", color: "bg-coral", ring: "ring-coral" },
 ];
 
 const TRASH: TrashItem[] = [
-  { emoji: "🍌", name: "banana", correct: "compost", hint: "Banana goes in Compost." },
-  { emoji: "🍎", name: "apple", correct: "compost", hint: "Apple goes in Compost." },
-  { emoji: "🥕", name: "carrot", correct: "compost", hint: "Carrot goes in Compost." },
-  { emoji: "🍂", name: "leaf", correct: "compost", hint: "Leaves go in Compost." },
-  { emoji: "📰", name: "newspaper", correct: "recycle", hint: "Paper goes in Recycle." },
-  { emoji: "📦", name: "box", correct: "recycle", hint: "Boxes go in Recycle." },
-  { emoji: "🥤", name: "plastic cup", correct: "recycle", hint: "Plastic goes in Recycle." },
-  { emoji: "🍾", name: "bottle", correct: "recycle", hint: "Bottles go in Recycle." },
-  { emoji: "🧻", name: "tissue", correct: "landfill", hint: "Tissue goes in Landfill." },
-  { emoji: "🪥", name: "toothbrush", correct: "landfill", hint: "Toothbrush goes in Landfill." },
+  { emoji: "🍌", name: "banana peel", correct: "compost", hint: "Food scraps are Wet Waste." },
+  { emoji: "🍎", name: "apple core", correct: "compost", hint: "Fruit goes in Wet Waste." },
+  { emoji: "🥕", name: "carrot", correct: "compost", hint: "Veggies go in Wet Waste." },
+  { emoji: "🍂", name: "leaves", correct: "compost", hint: "Leaves are Wet Waste." },
+  { emoji: "📰", name: "newspaper", correct: "recycle", hint: "Paper is Dry Waste." },
+  { emoji: "📦", name: "cardboard box", correct: "recycle", hint: "Cardboard is Dry Waste." },
+  { emoji: "🥤", name: "plastic cup", correct: "recycle", hint: "Plastic is Dry Waste." },
+  { emoji: "🍾", name: "glass bottle", correct: "recycle", hint: "Bottles are Dry Waste." },
+  { emoji: "🧻", name: "used tissue", correct: "landfill", hint: "Tissues go in Other Waste." },
+  { emoji: "🪥", name: "old toothbrush", correct: "landfill", hint: "Toothbrush is Other Waste." },
 ];
 
 const ROUNDS = 6;
 const START_LIVES = 5;
-const START_TIME = 12; // seconds per item
-const MIN_TIME = 8;
+const START_TIME = 22; // seconds per item — gentle pace for preschoolers
+const MIN_TIME = 18;
+
 
 
 /* --------------------------- Helpers --------------------------- */
@@ -59,9 +60,10 @@ function speak(text: string) {
   try {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.95;
-    u.pitch = 1.1;
+    u.rate = 0.8;
+    u.pitch = 1.15;
     u.volume = 1;
+
     window.speechSynthesis.speak(u);
   } catch {}
 }
@@ -337,9 +339,10 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
 
   const current = queue[round];
   const totalTime = useMemo(
-    () => Math.max(MIN_TIME, START_TIME - round * 0.35),
+    () => Math.max(MIN_TIME, START_TIME - round * 0.5),
     [round],
   );
+
 
   /* ---------- lifecycle ---------- */
 
@@ -360,7 +363,7 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
     setPhase("playing");
     logEvent({ game: "clean-earth", type: "session-start" });
     tickStreak();
-    setTimeout(() => speak(`Where does the ${q[0].name} go?`), 250);
+    setTimeout(() => speak(`Which bin for the ${q[0].name}? Wet, Dry, or Other?`), 400);
   }, []);
 
   // Timer
@@ -439,7 +442,7 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
           setAnswered(false);
           setFeedback(null);
           setLane(1);
-          setTimeLeft(Math.max(MIN_TIME, START_TIME - (round + 1) * 0.35));
+          setTimeLeft(Math.max(MIN_TIME, START_TIME - (round + 1) * 0.5));
           if (!isRight && lives - 1 <= 0) {
             endGame();
             return;
@@ -450,12 +453,16 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
           }
           setRound((r) => {
             const nr = r + 1;
-            setTimeout(() => queue[nr] && speak(`Where does the ${queue[nr].name} go?`), 150);
+            setTimeout(
+              () => queue[nr] && speak(`Which bin for the ${queue[nr].name}? Wet, Dry, or Other?`),
+              300,
+            );
             return nr;
           });
         },
-        isRight ? 1100 : 1600,
+        isRight ? 1800 : 2600,
       );
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [answered, current, streak, lives, round, queue],
@@ -558,14 +565,15 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
           {/* Question */}
           <div className="flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-2 text-sm font-black text-foreground shadow backdrop-blur md:text-base">
             <button
-              onClick={() => speak(`Where does the ${current.name} go?`)}
+              onClick={() => speak(`Which bin for the ${current.name}? Wet, Dry, or Other?`)}
               className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground"
               aria-label="Hear again"
             >
               <Volume2 className="h-4 w-4" />
             </button>
-            Where does the <span className="text-primary">{current.name}</span> go?
+            Which bin for the <span className="text-primary">{current.name}</span>? — Wet, Dry or Other?
           </div>
+
 
           {/* Falling item */}
           <div
