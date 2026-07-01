@@ -363,7 +363,7 @@ export function EndlessRunner({ onBack, onComplete }: EndlessRunnerProps) {
         player.rotation.x = s.sliding ? -0.3 : 0;
 
         // Leg run animation
-        animT += dt * 14;
+        animT += dt * 10;
         const swing = Math.sin(animT) * 0.5;
         legFL.position.z = 0.2 + swing * 0.2;
         legFR.position.z = 0.2 - swing * 0.2;
