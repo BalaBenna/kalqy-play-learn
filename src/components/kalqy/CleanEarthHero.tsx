@@ -565,14 +565,15 @@ export function CleanEarthHero({ onBack, onComplete }: Props) {
           {/* Question */}
           <div className="flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-2 text-sm font-black text-foreground shadow backdrop-blur md:text-base">
             <button
-              onClick={() => speak(`Where does the ${current.name} go?`)}
+              onClick={() => speak(`Which bin for the ${current.name}? Wet, Dry, or Other?`)}
               className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground"
               aria-label="Hear again"
             >
               <Volume2 className="h-4 w-4" />
             </button>
-            Where does the <span className="text-primary">{current.name}</span> go?
+            Which bin for the <span className="text-primary">{current.name}</span>? — Wet, Dry or Other?
           </div>
+
 
           {/* Falling item */}
           <div
