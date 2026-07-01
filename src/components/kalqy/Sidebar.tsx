@@ -27,6 +27,7 @@ const ageGroups: {
       { name: "Finger Gesture Quiz", active: true, view: "finger-quiz" },
       { name: "Endless Runner", active: true, view: "endless-runner" },
       { name: "Math Adventure", active: true, view: "math-adventure" },
+      { name: "Say the Word (Voice)", active: true, view: "voice-quiz" },
       { name: "Colour Hunt", active: false },
       { name: "Shape Catcher", active: false },
       { name: "Sound Safari", active: false },
