@@ -6,6 +6,7 @@ import { GameScreen, type GameResult } from "@/components/kalqy/GameScreen";
 import { FingerGestureQuiz } from "@/components/kalqy/FingerGestureQuiz";
 import { EndlessRunner } from "@/components/kalqy/EndlessRunner";
 import { MathAdventure } from "@/components/kalqy/MathAdventure";
+import { VoiceObjectQuiz } from "@/components/kalqy/VoiceObjectQuiz";
 
 export const Route = createFileRoute("/")({
   head: () => ({
