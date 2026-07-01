@@ -17,7 +17,8 @@ export type GameId =
   | "math-adventure"
   | "voice-quiz"
   | "feeling-pond"
-  | "clean-earth";
+  | "clean-earth"
+  | "vocab-face";
 
 export type EventType =
   | "session-start"
